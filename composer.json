@@ -5,7 +5,11 @@
     "keywords": ["laravel", "framework"],
     "license": "MIT",
     "require": {
+<<<<<<< HEAD
         "php": "^8.0",
+=======
+        "php": "^8.2",
+>>>>>>> 18ae1b995db9c49ad2960cba109148a70e16ecec
         "laravel/framework": "^11.0",
         "laravel/tinker": "^2.9",
         "php-flasher/flasher-toastr-laravel": "^2.0",
