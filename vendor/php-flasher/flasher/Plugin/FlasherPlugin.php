@@ -14,6 +14,7 @@ use Flasher\Prime\Notification\Type;
  *     main_script: string,
  *     translate: bool,
  *     inject_assets: bool,
+ *     excluded_paths: list<non-empty-string>,
  *     scripts: string[],
  *     styles: string[],
  *     options: array<string, mixed>,
@@ -69,7 +70,10 @@ final class FlasherPlugin extends Plugin
         return '/vendor/flasher/flasher.min.js';
     }
 
-    public function getScripts(): string|array
+    /**
+     * @return string[]
+     */
+    public function getScripts(): array
     {
         return [];
     }
@@ -97,7 +101,11 @@ final class FlasherPlugin extends Plugin
      *     scripts: string[],
      *     styles: string[],
      *     options: array<string, mixed>,
-     *     plugins?: array<string, array<string, mixed>>,
+     *     plugins?: array<string, array{
+     *         scripts?: string[],
+     *         styles?: string[],
+     *         options?: array<string, mixed>,
+     *     }>,
      * } $config
      *
      * @return array{
@@ -181,6 +189,7 @@ final class FlasherPlugin extends Plugin
      *     main_script?: string|null,
      *     translate?: bool,
      *     inject_assets?: bool,
+     *     excluded_paths?: list<non-empty-string>,
      *     filter?: array<string, mixed>,
      *     scripts: string[],
      *     styles: string[],
@@ -194,6 +203,7 @@ final class FlasherPlugin extends Plugin
      *     main_script: string|null,
      *     translate: bool,
      *     inject_assets: bool,
+     *     excluded_paths?: list<non-empty-string>,
      *     filter: array<string, mixed>,
      *     scripts: string[],
      *     styles: string[],
@@ -227,6 +237,7 @@ final class FlasherPlugin extends Plugin
      *     main_script: string|null,
      *     translate: bool,
      *     inject_assets: bool,
+     *     excluded_paths?: list<non-empty-string>,
      *     filter: array<string, mixed>,
      *     scripts: string[],
      *     styles: string[],
@@ -241,6 +252,7 @@ final class FlasherPlugin extends Plugin
      *      main_script: string|null,
      *      translate: bool,
      *      inject_assets: bool,
+     *      excluded_paths?: list<non-empty-string>,
      *      filter: array<string, mixed>,
      *      scripts: string[],
      *      styles: string[],
@@ -267,11 +279,7 @@ final class FlasherPlugin extends Plugin
             return $config;
         }
 
-        foreach ($config['flash_bag'] as $key => $value) {
-            $config['flash_bag'][$key] = array_values(array_unique(array_merge($mapping[$key] ?? [], (array) $value)));
-        }
-
-        $config['flash_bag'] += $mapping;
+        $config['flash_bag'] += array_merge($mapping, $config['flash_bag']);
 
         return $config;
     }
@@ -282,6 +290,7 @@ final class FlasherPlugin extends Plugin
      *      main_script: string|null,
      *      translate: bool,
      *      inject_assets: bool,
+     *      excluded_paths?: list<non-empty-string>,
      *      filter: array<string, mixed>,
      *      scripts: string[],
      *      styles: string[],
@@ -296,6 +305,7 @@ final class FlasherPlugin extends Plugin
      *      main_script: string|null,
      *      translate: bool,
      *      inject_assets: bool,
+     *      excluded_paths?: list<non-empty-string>,
      *      filter: array<string, mixed>,
      *      scripts: string[],
      *      styles: string[],
